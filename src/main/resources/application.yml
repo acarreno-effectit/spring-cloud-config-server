@@ -1,0 +1,27 @@
+server:
+  port: 8763
+spring:
+  application:
+    name: rgp-config-server
+  cloud:
+    config:
+      label: master
+      server:
+        jdbc:
+          order: '1'
+          sql: SELECT [PROPERTY_KEY], [VALUE] from [properties].[PROPERTIES] where APPLICATION=? and PROFILE=? and LABEL=?
+        bootstrap: 'true'
+  datasource:
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    password: ${DB_PASS:MyPass@word}
+    username: ${DB_USER:sa}
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:config_server}
+  security:
+    user:
+      name: ${SS_USER:admin}
+      password: ${SS_PASS:password}
+  profiles:
+    active: jdbc
+encrypt:
+  password: ${CS_ENCRYPT_PASS:password}
+  key: ${CS_ENCRYPT_KEY:5c0744940b5c369b}
